@@ -2,13 +2,14 @@ package com.example.myhealth.presentation
 
 import android.util.Log
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -20,8 +21,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myhealth.model.ImcViewModel
-import com.example.myhealth.presentation.components.TransparentTextField
 import kotlin.math.pow
 import androidx.compose.material.TextField as TextField
 
@@ -34,18 +33,20 @@ fun Imc(
     var estatura by remember{ mutableStateOf("") }
     var peso by remember{ mutableStateOf("") }
     var resultImc by remember { mutableStateOf(0.0) }
-    val focusManager = LocalFocusManager.current
 
+    val focusManager = LocalFocusManager.current
+    val scrollState = rememberScrollState()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.SpaceAround,
+            .padding(16.dp)
+            .verticalScroll(state = scrollState),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         Text(
-           text = "IMC",
+            text = "Indice de Masa Corporal",
             style = TextStyle(color = Color.Black, fontSize = 42.sp, fontWeight = FontWeight.Black)
         )
 
@@ -81,20 +82,17 @@ fun Imc(
             )
         )
 
+        Spacer(modifier = Modifier.size(8.dp))
+        Button(
+            shape = RoundedCornerShape(50),
+            onClick = {
+                if(estatura.isNotEmpty() && peso.isNotEmpty()){
+                    resultImc = (peso.toDouble()) / (estatura.toDouble()/100).pow(2)
+                    resultImc.toString()
+                    navegarResultImc(String.format("%.2f",resultImc))
+                }
 
-        Button(onClick = {
-
-            if(estatura.isNotEmpty() && peso.isNotEmpty()){
-                resultImc = (peso.toDouble()) / (estatura.toDouble()/100).pow(2)
-                resultImc.toString()
-                navegarResultImc(String.format("%.2f",resultImc))
-
-
-            }else{
-                navegarResultImc(resultImc.toString())
-            }
-
-        }) {
+            }) {
             Text("CALCULAR")
         }
     }

@@ -5,6 +5,7 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NamedNavArgument
 
+
 sealed class Destinations(
     val route: String,
     val arguments: List<NamedNavArgument>,
@@ -33,8 +34,9 @@ sealed class Destinations(
     object Diabetes: Destinations("Diabetes", emptyList(), "Diabetes", Icons.Filled.Save)
 
     //Pantalla de resultado de Diabetes
-    object ResultDiabetes: Destinations("ResultPgc/?newText={resultPgc}", emptyList(), "Resultado PGC", Icons.Filled.Settings) {
-        fun createRoutePgc(resultPgc: String) = "ResultPgc/?resultPgc=$resultPgc"
+    object ResultDiab: Destinations("ResultDiab/?newText={resultDiab}", emptyList(), "Resultado Diab", Icons.Filled.Settings) {
+        fun createRouteDiab(resultDiab: String) = "ResultDiab/?resultDiab=$resultDiab"
+
     }
 
 
@@ -45,6 +47,6 @@ sealed class Destinations(
     object Register: Destinations("register", emptyList(), "Registro", Icons.Filled.Security )
 
     //Pantalla donde se hara el Login y ver datos del perfil
-    object Perfil: Destinations("perfil",emptyList(), "Perfil", Icons.Filled.Favorite)
+    object Perfil: Destinations("perfil", emptyList(), "Perfil", Icons.Filled.Favorite)
 
 }
